@@ -9,9 +9,7 @@ export const pool = new pg.Pool({
   host: process.env.POSTGRES_HOST,
   port: process.env.POSTGRES_PORT,
   database: process.env.POSTGRES_DATABASE,
-  ssl: {
-    rejectUnauthorized: false,
-  },
+  ssl: process.env.NODE_ENV === "production" ? true : false,
   max: 10,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 30000,

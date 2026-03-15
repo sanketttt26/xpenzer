@@ -1,9 +1,10 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { formatDateForInput } from "../../utils/date";
 import InputGroup from "./InputGroup";
 import SearchBar from "./SearchBar";
 import FriendItem from "./FriendItem";
 import Contributor from "./Contributor";
+import VoiceExpenseAssistant from "./VoiceExpenseAssistant";
 import { spendingStyles } from "./styles";
 import friendsApi from "../../api/modules/friends";
 import { useNavigate } from "react-router-dom";
@@ -94,11 +95,35 @@ const NewSpendingForm = () => {
     setSearchValue("");
   };
 
+  const applyVoiceExpense = ({ amount, description, date }) => {
+    if (amount !== null && amount !== undefined && amountRef.current) {
+      amountRef.current.value = amount;
+    }
+
+    if (description && descriptionRef.current) {
+      descriptionRef.current.value = description;
+    }
+
+    if (date && dateRef.current) {
+      dateRef.current.value = date;
+    }
+
+    dispatch(
+      setRefPayload({
+        amount: amountRef.current?.value || "",
+        description: descriptionRef.current?.value || "",
+        date: dateRef.current?.value || formatDateForInput(),
+      })
+    );
+  };
+
   return (
     <form
       className={spendingStyles.form.container}
       onSubmit={handleNewSpending}
     >
+      <VoiceExpenseAssistant onApply={applyVoiceExpense} />
+
       <InputGroup
         label="Amount"
         placeholder="₹ XXXX"

@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 
-body{
+body {
   width: 100%;
-  height : 100vh;
+  height: 100vh;
   background-color: #000000;
 }
 
@@ -33,11 +33,11 @@ body{
   -moz-osx-font-smoothing: grayscale;
 }
 
-.app{
+.app {
   width: 100%;
   max-width: 450px;
-  margin : 0 auto;
-  min-height : 100vh;
+  margin: 0 auto;
+  min-height: 100vh;
   background-color: #000000;
 }
 
@@ -62,11 +62,11 @@ body{
   }
 }
 
-.hide-scrollbar::-webkit-scrollbar{
+.hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
-.avatar-small span{
+.avatar-small span {
   font-size: small !important;
 }
 
@@ -81,7 +81,7 @@ body{
   position: relative;
 }
 
-.custom-checkbox:checked{
+.custom-checkbox:checked {
   box-shadow: #9ca4ff;
 }
 
@@ -144,7 +144,7 @@ input[type="date"]::placeholder {
   color: #999;
 }
 
-.bottom-message{
+.bottom-message {
   background-color: #121212;
 }
 
@@ -242,16 +242,16 @@ input[type="number"]::-webkit-inner-spin-button {
   margin: 0;
 }
 
-.hide-scrollbar{
-      overflow-y: scroll;
-      -ms-overflow-style: none;
-      /* IE and Edge */
-      scrollbar-width: none;
-      /* Firefox */
+.hide-scrollbar {
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .hide-scrollbar::-webkit-scrollbar {
-      display: none;
+  display: none;
 }
 
 

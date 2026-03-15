@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import routes from "./routes/index.js";
+import voiceExpenseRoutes from "./routes/voiceExpenseRoutes.js";
 
 // DOTENV CONFIG
 dotenv.config();
@@ -15,7 +16,7 @@ app.use(
   cors({
     origin: process.env.CLIENT_URL,
     credentials: true,
-  })
+  }),
 );
 app.use(cookieParser());
 app.use(express.json());
@@ -33,6 +34,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1", routes);
+app.use("/api/voice-expense", voiceExpenseRoutes);
 
 // FUNCTIONS
 app.listen(PORT, () => {

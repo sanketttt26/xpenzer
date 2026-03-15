@@ -61,10 +61,12 @@ export const loginUser = async (req, res) => {
     isUser.password = null;
     const token = generateToken(isUser);
 
+    const isProduction = process.env.NODE_ENV === "production";
+
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
     return response.ok(res, isUser, "Login successful");

@@ -31,7 +31,7 @@ const Login = ({ setAuthState, setMessages }) => {
       setMessages({ successMsg: res.message });
       dispatch(saveUser(res.data));
       navigate("/");
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       navigate("/login");
       console.log(error);

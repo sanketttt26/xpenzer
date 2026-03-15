@@ -13,78 +13,21 @@ const friendsEndpoints = {
 };
 
 const friendsApi = {
-  getAllFriends: async () => {
-    try {
-      const res = await client.get(friendsEndpoints.getAll);
-      return res;
-    } catch (error) {
-      throw error;
-    }
-  },
-  getFriendLike: async (name) => {
-    try {
-      const res = await client.get(friendsEndpoints.getFriendLike(name));
-      return res;
-    } catch (error) {
-      throw error;
-    }
-  },
-  getUsersLike: async (name) => {
-    try {
-      const res = await client.get(friendsEndpoints.getUsersLike(name));
-      return res;
-    } catch (error) {
-      throw error;
-    }
-  },
-  friendRequest: async (fid) => {
-    try {
-      const res = await client.post(friendsEndpoints.friendRequest, {
-        id: fid,
-      });
-      return res;
-    } catch (error) {
-      throw error;
-    }
-  },
-  getTransactions: async (fid, start, end) => {
-    try {
-      const res = await client.get(
-        friendsEndpoints.getTransactions(fid, start, end)
-      );
-      return res;
-    } catch (error) {
-      throw error;
-    }
-  },
-  settleBalance: async (fid) => {
-    try {
-      const res = await client.patch(friendsEndpoints.settleBalance, { fid });
-      return res;
-    } catch (error) {
-      throw error;
-    }
-  },
-  settleTransaction: async (fid, amount, contriId) => {
-    try {
-      const res = await client.put(friendsEndpoints.settleTransaction, {
-        fid,
-        amount,
-        contriId,
-      });
-      return res;
-    } catch (error) {
-      throw error;
-    }
-  },
-  acceptFriendRequest: async (fid) => {
-    try {
-      const res = await client.post(friendsEndpoints.acceptFriendRequest(fid));
-      return res;
-    } catch (error) {
-      console.log(error);
-    }
-  },
+  getAllFriends: async () => client.get(friendsEndpoints.getAll),
+  getFriendLike: async (name) => client.get(friendsEndpoints.getFriendLike(name)),
+  getUsersLike: async (name) => client.get(friendsEndpoints.getUsersLike(name)),
+  friendRequest: async (fid) => client.post(friendsEndpoints.friendRequest, { id: fid }),
+  getTransactions: async (fid, start, end) =>
+    client.get(friendsEndpoints.getTransactions(fid, start, end)),
+  settleBalance: async (fid) => client.patch(friendsEndpoints.settleBalance, { fid }),
+  settleTransaction: async (fid, amount, contriId) =>
+    client.put(friendsEndpoints.settleTransaction, {
+      fid,
+      amount,
+      contriId,
+    }),
+  acceptFriendRequest: async (fid) =>
+    client.post(friendsEndpoints.acceptFriendRequest(fid)),
 };
 
 export default friendsApi;

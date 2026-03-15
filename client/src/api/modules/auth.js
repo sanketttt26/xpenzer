@@ -7,28 +7,7 @@ const authEndpoints = {
 };
 
 export const authApi = {
-  login: async (auth) => {
-    try {
-      const res = await client.post(authEndpoints.login, auth);
-      return res;
-    } catch (error) {
-      throw error;
-    }
-  },
-  signup: async (auth) => {
-    try {
-      const res = await client.post(authEndpoints.signup, auth);
-      return res;
-    } catch (error) {
-      throw error;
-    }
-  },
-  autoLogin: async (auth) => {
-    try {
-      const res = await client.get(authEndpoints.autoLogin);
-      return res;
-    } catch (error) {
-      throw error;
-    }
-  },
+  login: async (auth) => client.post(authEndpoints.login, auth),
+  signup: async (auth) => client.post(authEndpoints.signup, auth),
+  autoLogin: async () => client.get(authEndpoints.autoLogin),
 };

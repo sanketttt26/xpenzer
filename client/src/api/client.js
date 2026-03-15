@@ -2,6 +2,23 @@ import axios from "axios";
 import queryString from "query-string";
 import { setupCache } from "axios-cache-interceptor";
 
+const normalizeApiError = (error) => {
+  const responseData = error?.response?.data;
+
+  if (responseData && typeof responseData === "object") {
+    return {
+      ...responseData,
+      status: error.response?.status,
+    };
+  }
+
+  return {
+    message:
+      responseData || error?.message || "Something went wrong, please try again",
+    status: error?.response?.status,
+  };
+};
+
 // CLIENT REQUEST CONFIG
 export const api = axios.create({
   baseURL: import.meta.env.VITE_APP_SERVER_URL,
@@ -23,7 +40,6 @@ client.interceptors.response.use(
     return res;
   },
   (err) => {
-    console.log(err);
-    throw err.response.data;
-  }
+    throw normalizeApiError(err);
+  },
 );
