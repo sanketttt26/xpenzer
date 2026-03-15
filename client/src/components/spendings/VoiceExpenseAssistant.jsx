@@ -284,12 +284,6 @@ const VoiceExpenseAssistant = ({ onApply }) => {
               </p>
             </div>
             <div>
-              <p className={spendingStyles.voiceAssistant.resultLabel}>Payer</p>
-              <p className={spendingStyles.voiceAssistant.resultValue}>
-                {formatFieldValue(parsedExpense.payer)}
-              </p>
-            </div>
-            <div>
               <p className={spendingStyles.voiceAssistant.resultLabel}>Date</p>
               <p className={spendingStyles.voiceAssistant.resultValue}>
                 {formatFieldValue(parsedExpense.date)}

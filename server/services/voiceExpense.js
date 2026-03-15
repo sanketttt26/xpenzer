@@ -32,22 +32,6 @@ const CURRENCY_MAP = [
   { pattern: /\b(?:gbp|pounds?)\b/i, code: "GBP" },
 ];
 
-const PAYER_BLACKLIST = new Set([
-  "rupee",
-  "rupees",
-  "rs",
-  "inr",
-  "usd",
-  "eur",
-  "gbp",
-  "dollar",
-  "dollars",
-  "pound",
-  "pounds",
-  "paid",
-  "spent",
-]);
-
 const DATE_CLEANUP_PATTERNS = [
   /\b(?:today|tomorrow|yesterday)\b/gi,
   /\b(?:on\s+)?(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\s+\d{1,2}(?:st|nd|rd|th)?(?:,?\s+\d{2,4})?\b/gi,
@@ -218,41 +202,6 @@ const cleanupPhrase = (value = "") =>
       .replace(/\b(?:paid|spent|for|on|by)\b$/gi, "")
   );
 
-const parsePayer = (text) => {
-  if (
-    /\b(?:i\s+paid|i\s+spent|paid\s+by\s+me|spent\s+by\s+me|me\s+paid|me\s+spent)\b/i.test(
-      text
-    )
-  ) {
-    return "me";
-  }
-
-  const patterns = [
-    /\b(?:paid|spent)\s+by\s+([a-z][a-z\s'-]*?)(?=\s+(?:for|on)\b|$)/i,
-    /\b([a-z][a-z\s'-]*?)\s+(?:paid|spent)\b/i,
-  ];
-
-  for (const pattern of patterns) {
-    const match = text.match(pattern);
-
-    if (!match?.[1]) continue;
-
-    const payer = cleanupPhrase(match[1]).toLowerCase();
-
-    if (!payer) continue;
-
-    const words = payer.split(" ");
-
-    if (words.some((word) => PAYER_BLACKLIST.has(word))) {
-      continue;
-    }
-
-    return payer;
-  }
-
-  return null;
-};
-
 const stripDatePhrases = (value) =>
   DATE_CLEANUP_PATTERNS.reduce(
     (accumulator, pattern) => accumulator.replace(pattern, ""),
@@ -286,8 +235,9 @@ const parseDescription = (text) => {
 const parseEnglishVoiceExpense = (text, language) => {
   const amount = parseAmount(text);
   const currency = parseCurrency(text);
-  const payer = parsePayer(text);
-  const date = formatDate(parseRelativeDate(text) || parseExplicitDate(text));
+  const date = formatDate(
+    parseRelativeDate(text) || parseExplicitDate(text) || new Date()
+  );
   const description = parseDescription(text);
   const missingFields = [];
   const notes = [];
@@ -298,14 +248,6 @@ const parseEnglishVoiceExpense = (text, language) => {
 
   if (!description) {
     missingFields.push("description");
-  }
-
-  if (!payer) {
-    missingFields.push("payer");
-  } else if (payer !== "me") {
-    notes.push(
-      "The current add expense flow records the logged-in user as the payer, so please review this voice draft before submitting."
-    );
   }
 
   if (currency !== "INR") {
@@ -320,7 +262,6 @@ const parseEnglishVoiceExpense = (text, language) => {
     amount: Number.isFinite(amount) ? amount : null,
     currency,
     description,
-    payer,
     date,
     missingFields,
     notes,
